@@ -136,4 +136,7 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-parser.out
+
+# Parser output
+parser*.out
+
