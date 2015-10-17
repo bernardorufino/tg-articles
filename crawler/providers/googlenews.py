@@ -14,7 +14,8 @@ def read(url):
         name = name.strip()
         # TODO: Remove and handle unicode properly
         # TODO: Problem with stdout pipe or file
-        name = unicodedata.normalize('NFD', name).encode('ascii', 'ignore')
+        if isinstance(name, unicode):
+            name = unicodedata.normalize('NFD', name).encode('ascii', 'ignore')
         for article in section_d(".esc-lead-article-title a"):
             url = article.get("href")
             inputs.append((name, url))
