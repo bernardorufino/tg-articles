@@ -137,6 +137,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# Parser output
-parser*.out
+# Parser output and log
+crawler/log/
+crawler/out/
 
