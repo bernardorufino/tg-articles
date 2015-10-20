@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
+DIR=$(dirname $0)
+
 function logfile {
     PREFIX=$([[ -z $1 ]] && echo "" || echo $1"_")
     SUFFIX=$([[ -z $2 ]] && echo "" || echo "_"$2)
-    echo "log/"${PREFIX}$(date "+%Y%m%d_%H%M%S")${SUFFIX}".log"
+    echo "${DIR}/log/"${PREFIX}$(date "+%Y%m%d_%H%M%S")${SUFFIX}".log"
 }
 
 function googlenews_subsection {
@@ -13,8 +15,8 @@ function googlenews_subsection {
         URL="https://news.google.com/news/section?topic="$1
     fi
     LOGFILE=$(logfile "provider" $2)
-    echo "./provider.py ${URL} | xargs -n 2 ./parser.py  -l "${LOGFILE}" -o out/data.json"
-    ./provider.py ${URL} | xargs -n 2 ./parser.py  -l ${LOGFILE} -o out/data.json #2> ${LOGFILE}
+    echo "${DIR}/provider.py ${URL} | xargs -n 2 ${DIR}/parser.py  -l "${LOGFILE}" -o ${DIR}/out/data.json"
+    ${DIR}/provider.py ${URL} | xargs -n 2 ${DIR}/parser.py  -l ${LOGFILE} -o ${DIR}/out/data.json #2> ${LOGFILE}
 }
 
 

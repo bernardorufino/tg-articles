@@ -4,7 +4,6 @@
 import argparse
 import re
 import unicodedata
-import sys
 import webarticle2text
 from datetime import datetime
 import os
