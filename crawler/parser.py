@@ -1,7 +1,10 @@
 #!/usr/bin/env python
+# TODO: redirect stderr (Unicode errors garbage)
 
 import argparse
 import re
+import unicodedata
+import sys
 import webarticle2text
 from datetime import datetime
 import os
@@ -36,6 +39,17 @@ def ensure_directory(filepath):
         os.makedirs(dirpath)
 
 
+def process_content(content):
+    content = content.decode('utf-8')
+    content = unicodedata.normalize('NFD', content)
+    content = content.encode('ascii', 'ignore')
+    content = content.lower()
+    content = re.sub("\s+", " ", content)
+    content = re.sub("[^\w\s]", "", content)
+    content = content.strip()
+    return content
+
+
 def main():
     args = parser.parse_args()
 
@@ -52,7 +66,8 @@ def main():
         return 0
 
     try:
-        content = webarticle2text.extractFromURL(args.url).strip().replace('"', "'")
+        content = webarticle2text.extractFromURL(args.url)
+        content = process_content(content)
     except Exception as e:
         log(args.log, args.url + ": Exception " + str(e.__class__))
         log(args.log, e.message)
