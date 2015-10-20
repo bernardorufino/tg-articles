@@ -12,8 +12,9 @@ function googlenews_subsection {
     else
         URL="https://news.google.com/news/section?topic="$1
     fi
-    echo "./provider.py ${URL} | xargs -n 2 ./parser.py  -l "$(logfile "provider" $2)" -o out/data.json"
-    ./provider.py ${URL} | xargs -n 2 ./parser.py  -l $(logfile "provider" $2) -o out/data.json
+    LOGFILE=$(logfile "provider" $2)
+    echo "./provider.py ${URL} | xargs -n 2 ./parser.py  -l "${LOGFILE}" -o out/data.json"
+    ./provider.py ${URL} | xargs -n 2 ./parser.py  -l ${LOGFILE} -o out/data.json 2> ${LOGFILE}
 }
 
 
