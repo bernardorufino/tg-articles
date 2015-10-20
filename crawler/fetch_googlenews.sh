@@ -14,7 +14,7 @@ function googlenews_subsection {
     fi
     LOGFILE=$(logfile "provider" $2)
     echo "./provider.py ${URL} | xargs -n 2 ./parser.py  -l "${LOGFILE}" -o out/data.json"
-    ./provider.py ${URL} | xargs -n 2 ./parser.py  -l ${LOGFILE} -o out/data.json 2> ${LOGFILE}
+    ./provider.py ${URL} | xargs -n 2 ./parser.py  -l ${LOGFILE} -o out/data.json #2> ${LOGFILE}
 }
 
 
