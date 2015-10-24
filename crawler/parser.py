@@ -5,6 +5,7 @@ import argparse
 import re
 import unicodedata
 import webarticle2text
+import traceback
 from datetime import datetime
 import os
 
@@ -74,6 +75,8 @@ def main():
     except Exception as e:
         log(args.log, args.url + ": Exception " + str(e.__class__))
         log(args.log, e.message)
+        log(args.log, traceback.format_exc())
+
         print "FAIL"
         return 1
 
