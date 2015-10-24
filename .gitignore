@@ -141,3 +141,7 @@ Temporary Items
 crawler/log/
 crawler/out/
 
+# Classifier experiments
+classifier/exp/
+
+
