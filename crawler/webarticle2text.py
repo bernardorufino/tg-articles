@@ -27,6 +27,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 VERSION = (2, 0, 3)
 __version__ = '.'.join(map(str, VERSION))
+# Fix links
+
 
 import os
 import sys
@@ -116,7 +118,7 @@ class TextExtractor(HTMLParser):
     
     dom = []
     path = [0]
-    pathBlur = 5
+    pathBlur = 1
     
     def __init__(self):
         HTMLParser.__init__(self)
