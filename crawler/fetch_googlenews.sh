@@ -15,8 +15,8 @@ function googlenews_subsection {
         URL="https://news.google.com/news/section?topic="$1
     fi
     LOGFILE=$(logfile "provider" $2)
-    echo "${DIR}/provider.py ${URL} | xargs -n 2 ${DIR}/parser.py  -l "${LOGFILE}" -o ${DIR}/out/data.json"
-    ${DIR}/provider.py ${URL} | xargs -n 2 ${DIR}/parser.py  -l ${LOGFILE} -o ${DIR}/out/data.json #2> ${LOGFILE}
+    echo "${DIR}/provider.py ${URL} | xargs -n 2 ${DIR}/parser.py  -l "${LOGFILE}" -o ${DIR}/out/data.json  -i ${DIR}/out/data.idx"
+    ${DIR}/provider.py ${URL} | xargs -n 2 ${DIR}/parser.py  -l ${LOGFILE} -o ${DIR}/out/data.json -i ${DIR}/out/data.idx #2> ${LOGFILE}
 }
 
 
