@@ -8,19 +8,23 @@ import webarticle2text
 from datetime import datetime
 import os
 
+
+DIR = os.path.dirname(os.path.realpath(__file__))
+
+
 parser = argparse.ArgumentParser(prog='parser',
                                  description="""Extracts the content of a web page and stores the result""")
 
 # Provided by the .sh entry file, thus not public
 parser.add_argument('tag', help="The tag of the subject (Politics, Entertainment, Tourism, ...)")
 parser.add_argument('url', help="The url of the web page that you want to parse")
-parser.add_argument('-o', '--output', default="out/data.json",
+parser.add_argument('-o', '--output', default="{}/out/data.json".format(DIR),
                     help="Output file where the json result will be appended, a {...}, will be added to the file. "
                          "Defaults to data.json")
-parser.add_argument('-i', '--index', default="out/data.idx",
+parser.add_argument('-i', '--index', default="{}/out/data.idx".format(DIR),
                     help="File that will contain a index with the urls already crawled to avoid redundancies. "
                          "Defaults to data.idx")
-parser.add_argument('-l', '--log', default="log/{}.log".format(datetime.now().strftime('%Y%m%d_%H%M%S')),
+parser.add_argument('-l', '--log', default="{}/log/{}.log".format(DIR, datetime.now().strftime('%Y%m%d_%H%M%S')),
                     help="The name of the file that will receive log entries. Defaults to log/YYYYmmdd_HHMMSS.log")
 
 
