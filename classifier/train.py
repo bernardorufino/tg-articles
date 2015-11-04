@@ -5,6 +5,7 @@ from collections import defaultdict
 import json
 import os
 import re
+import parameters
 
 
 parser = argparse.ArgumentParser(prog='train',
@@ -50,18 +51,18 @@ def main():
     vocab = set()
 
     for tag, card in tagged_corpus.iteritems():
-        filepath = '{}/{}.dat'.format(args.output, tag)
+        filepath = os.path.join(args.output, tag)
         vocab |= set(card.keys())
         with open(filepath, 'w+') as f:
             for w, c in sorted(card.iteritems(), key=lambda (w, c): c, reverse=True):
                 print >> f, "{} {}".format(c, w)
             print >> f
 
-    with open('{}/_priors.dat'.format(args.output), 'w+') as f:
+    with open(os.path.join(args.output, parameters.PRIORS_FILE), 'w+') as f:
         for tag, articles in tagged_corpus_by_articles.iteritems():
             print >> f, "{} {}".format(len(articles), tag)
 
-    with open('{}/_vocab.dat'.format(args.output), 'w+') as f:
+    with open(os.path.join(args.output, parameters.VOCAB_FILE), 'w+') as f:
         for w in sorted(vocab):
             print >> f, w
 
