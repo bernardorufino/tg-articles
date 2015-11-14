@@ -4,6 +4,8 @@ import json
 import re
 import math
 import sys
+from utils import histogram
+from utils import bytefy
 
 
 class Classifier(object):
@@ -20,6 +22,31 @@ class Classifier(object):
         self._weights = {}
         pass
 
+    def dump(self):
+        data = {
+            'ntokens_per_tag': sorted(self._ntokens_per_tag),
+            'ndocs_per_tag': sorted(self._ndocs_per_tag),
+            'ndocs': self._ndocs,
+            'vocab': list(sorted(self._vocab)),
+            'tags': sorted(self._tags),
+            'weights': sorted(self._weights)
+        }
+        serial_data = json.dumps(data)
+        return serial_data
+
+    @classmethod
+    def load(cls, serial_data, processor):
+        data = json.loads(serial_data)
+        data = bytefy(data)
+        instance = cls(processor)
+        instance._ntokens_per_tag = data['ntokens_per_tag']
+        instance._ndocs_per_tag = data['ndocs_per_tag']
+        instance._ndocs = data['ndocs']
+        instance._vocab = set(data['vocab'])
+        instance._tags = data['tags']
+        instance._weights = data['weights']
+        return instance
+
     def train(self, data):
         self._processor.process_examples(data)
 
@@ -30,15 +57,13 @@ class Classifier(object):
                 continue
             articles_per_tag[tag].append(example['tokens'])
 
-        self._ntokens_per_tag = {tag: self._histogram(token for article in articles for token in article)
+        self._ntokens_per_tag = {tag: histogram(token for article in articles for token in article)
                                  for tag, articles in articles_per_tag.iteritems()}
         self._ndocs_per_tag = {tag: len(articles) for tag, articles in articles_per_tag.iteritems()}
         self._ndocs = sum(self._ndocs_per_tag.values())
         self._vocab = set(t for tag, tokens in self._ntokens_per_tag.iteritems() for t in tokens.keys())
         self._tags = list(self._ntokens_per_tag.keys())
-        # sys.stdout.write('Computing weights...')
         self._weights = self._compute_weights()
-        # print(' Done')
 
         for tag, tokens in self._ntokens_per_tag.iteritems():
             total = sum(tokens.values())
@@ -74,9 +99,6 @@ class Classifier(object):
 
         return weights
 
-    def save(self, dir):
-        raise NotImplementedError()
-
     def classify(self, text, alpha=1, verbose=False):
         if verbose:
             print '-- Classifier.classify() --'
@@ -104,9 +126,5 @@ class Classifier(object):
     def normalize_tag_label(self, tag):
         return re.sub('\s', '_', tag).lower()
 
-    def _histogram(self, lis):
-        hist = defaultdict(lambda: 0)
-        for item in lis:
-            hist[item] += 1
-        return hist
+
 
