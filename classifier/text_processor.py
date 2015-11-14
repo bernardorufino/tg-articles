@@ -15,7 +15,11 @@ class TextProcessor(object):
         self._stemmer = nltk.stem.RSLPStemmer()
 
     def process_text(self, text):
-        return text.split()
+        text = self._process_text(text)
+        tokens = text.split()
+        tokens = [token for token in tokens if token not in UNWANTED_WORDS]
+        tokens = [self._stem(token) for token in tokens]
+        return tokens
 
     def process_examples(self, examples):
         self._vocab = set()
