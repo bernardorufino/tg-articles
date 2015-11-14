@@ -30,7 +30,7 @@ def main():
     args = parser.parse_args()
     full_data_json = read_data(args.data)
 
-    #for n in xrange(30, len(full_data_json), 30):
+    # for n in xrange(30, len(full_data_json), 30):
     for n in [len(full_data_json)]:
 
         corrects = 0
@@ -60,7 +60,7 @@ def main():
                 if predicted_tag == expected_tag:
                     corrects += 1
                 else:
-                    #print 'expected = {}, predicted = {}'.format(expected_tag, predicted_tag)
+                    # print 'expected = {}, predicted = {}'.format(expected_tag, predicted_tag)
                     pass
                 total += 1
 
