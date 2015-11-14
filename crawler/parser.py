@@ -51,7 +51,7 @@ def process_content(content):
     content = content.encode('ascii', 'ignore')
     content = content.lower()
     content = re.sub("\s+", " ", content)
-    content = re.sub("[^\w\s]", "", content)
+    content = re.sub("[^\w\s:/]", "", content)
     content = content.strip()
     return content
 
