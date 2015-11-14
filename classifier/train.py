@@ -13,7 +13,7 @@ parser = argparse.ArgumentParser(prog='classify',
 
 parser.add_argument('data', help="The data file in json format")
 
-parser.add_argument('-o', '--output', default=os.path.join('out', 'classifier.dat'),
+parser.add_argument('-o', '--output', default=os.path.join(os.path.dirname(__file__), 'out', 'classifier.dat'),
                     help="Output file where precomputed data for the classifier will be put. Defaults to "
                          "out/classifier.dat")
 

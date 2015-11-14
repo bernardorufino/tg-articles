@@ -12,4 +12,4 @@ if [[ ${CODE} -ne 0 ]]; then
     exit ${CODE}
 fi
 sed -E -e 's|},$|}|' -i '' ${OUT}
-${DIR}/classifier/classify.py "${DIR}/crawler/out/classifier" ${OUT}
+${DIR}/classifier/classify.py -c "${DIR}/classifier/out/classifier.dat" ${OUT}
