@@ -15,7 +15,7 @@ parser = argparse.ArgumentParser(prog='classify',
 parser.add_argument('data', help="The data file in json format")
 
 
-SAMPLES = 1
+SAMPLES = 100
 
 
 def read_data(data):
