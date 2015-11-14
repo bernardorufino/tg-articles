@@ -3,6 +3,7 @@
 import argparse
 import json
 import sys
+from utils import read_dataset
 from text_processor import TextProcessor
 from classifier import Classifier
 import os
@@ -18,17 +19,9 @@ parser.add_argument('data', help="The data file in json format")
 SAMPLES = 100
 
 
-def read_data(data):
-    with open(data, 'r') as f:
-        data_text = f.read()
-    data_text = data_text.strip(', ' + os.linesep)
-    data_text = '[' + data_text + ']'
-    return json.loads(data_text)
-
-
 def main():
     args = parser.parse_args()
-    full_data_json = read_data(args.data)
+    full_data_json = read_dataset(args.data)
 
     # for n in xrange(30, len(full_data_json), 30):
     for n in [len(full_data_json)]:

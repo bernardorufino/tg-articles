@@ -1,4 +1,5 @@
 from collections import defaultdict
+import json
 import os
 
 
@@ -24,3 +25,11 @@ def ensure_directory(filepath):
     dirpath = os.path.dirname(filepath)
     if not os.path.exists(dirpath):
         os.makedirs(dirpath)
+
+
+def read_dataset(data):
+    with open(data, 'r') as f:
+        data_text = f.read()
+    data_text = data_text.strip(', ' + os.linesep)
+    data_text = '[' + data_text + ']'
+    return json.loads(data_text)
