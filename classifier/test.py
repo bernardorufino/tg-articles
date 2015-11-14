@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 
 import argparse
-import json
-import sys
+import random
+
 from utils import read_dataset
 from text_processor import TextProcessor
 from classifier import Classifier
-import os
-import random
 
 
 parser = argparse.ArgumentParser(prog='classify',
