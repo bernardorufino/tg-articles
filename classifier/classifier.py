@@ -24,12 +24,12 @@ class Classifier(object):
 
     def dump(self):
         data = {
-            'ntokens_per_tag': sorted(self._ntokens_per_tag),
-            'ndocs_per_tag': sorted(self._ndocs_per_tag),
+            'ntokens_per_tag': self._ntokens_per_tag,
+            'ndocs_per_tag': self._ndocs_per_tag,
             'ndocs': self._ndocs,
             'vocab': list(sorted(self._vocab)),
             'tags': sorted(self._tags),
-            'weights': sorted(self._weights)
+            'weights': self._weights
         }
         serial_data = json.dumps(data)
         return serial_data
