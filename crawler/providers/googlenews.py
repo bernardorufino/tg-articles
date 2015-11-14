@@ -1,7 +1,9 @@
 from pyquery import PyQuery as pq
 import unicodedata
 import re
+import sys
 
+IGNORE_TAGS = ["Ultimas noticias", "Mundo", "Brasil", "Mais noticias principais"]
 
 def read(url):
     inputs = []
@@ -16,6 +18,8 @@ def read(url):
         # TODO: Problem with stdout pipe or file
         if isinstance(name, unicode):
             name = unicodedata.normalize('NFD', name).encode('ascii', 'ignore')
+        if name in IGNORE_TAGS:
+            continue
         for article in section_d(".esc-lead-article-title a"):
             url = article.get("href")
             inputs.append((name, url))
