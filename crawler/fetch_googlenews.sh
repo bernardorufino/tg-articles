@@ -26,10 +26,10 @@ googlenews_subsection "" "main"
 if [[ $1 != "single" ]]; then
 
     # "Mundo" news
-    googlenews_subsection "w" "mundo"
+    # googlenews_subsection "w" "mundo"
 
     # "Brasil" news
-    googlenews_subsection "n" "brasil"
+    # googlenews_subsection "n" "brasil"
 
     # "Negocios" news
     googlenews_subsection "b" "negocios"
@@ -44,6 +44,6 @@ if [[ $1 != "single" ]]; then
     googlenews_subsection "s" "esportes"
 
     # "Mais" news
-    googlenews_subsection "h" "mais"
+    # googlenews_subsection "h" "mais"
 
 fi
