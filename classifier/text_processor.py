@@ -24,6 +24,12 @@ class TextProcessor(object):
             for token in example['tokens']:
                 self._vocab.add(token)
 
+    def _stem(self, token):
+        if len(token) > 7:
+            return self._stemmer.stem(token).encode('ascii', 'ignore')
+        else:
+            return token
+
     def _process_text(self, text):
 
         # Unicode to ascii
