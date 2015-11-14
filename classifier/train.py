@@ -18,7 +18,7 @@ parser.add_argument('-o', '--output', default=None,
                          "existent")
 
 
-def count(lis):
+def histogram(lis):
     card = defaultdict(lambda: 0)
     for item in lis:
         card[item] += 1
@@ -40,7 +40,7 @@ def main():
         tag = re.sub('\s', '_', example['tag']).lower()
         tagged_corpus_by_articles[tag].append(example['content'])
 
-    tagged_corpus = {tag: count(' '.join(articles).split()) for tag, articles in tagged_corpus_by_articles.iteritems()}
+    tagged_corpus = {tag: histogram(' '.join(articles).split()) for tag, articles in tagged_corpus_by_articles.iteritems()}
 
     if not args.output:
         args.output = os.path.join(os.path.dirname(args.data), 'classifier')
