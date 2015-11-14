@@ -111,6 +111,7 @@ def main():
     except Exception as e:
         log(args.log, args.url + ": Can't write file due to Exception " + str(e.__class__))
         log(args.log, args.url + ": " + e.message)
+        log(args.log, args.url + ": " + traceback.format_exc())
         print "FAIL"
         return 1
 
