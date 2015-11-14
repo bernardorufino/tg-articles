@@ -25,6 +25,8 @@ parser.add_argument('-o', '--output', default="{}/out/data.json".format(DIR),
 parser.add_argument('-i', '--index', default="{}/out/data.idx".format(DIR),
                     help="File that will contain a index with the urls already crawled to avoid redundancies. "
                          "Defaults to data.idx")
+parser.add_argument('-j', '--ignore-index', action='store_true',
+                    help="Makes the parser ignore the index file. Has precedence over specifying -i option.")
 parser.add_argument('-l', '--log', default="{}/log/{}.log".format(DIR, datetime.now().strftime('%Y%m%d_%H%M%S')),
                     help="The name of the file that will receive log entries. Defaults to log/YYYYmmdd_HHMMSS.log")
 
@@ -57,7 +59,7 @@ def process_content(content):
 def main():
     args = parser.parse_args()
 
-    if os.path.isfile(args.index):
+    if not args.ignore_index and os.path.isfile(args.index):
         with open(args.index, 'r') as f:
             lines = f.readlines()
             lines = [line.strip() for line in lines]
@@ -98,9 +100,10 @@ def main():
             f.write('},' + os.linesep)
         log(args.log, args.url + ": Data written")
 
-        ensure_directory(args.index)
-        with open(args.index, 'a+') as f:
-            f.write(args.url + os.linesep)
+        if not args.ignore_index:
+            ensure_directory(args.index)
+            with open(args.index, 'a+') as f:
+                f.write(args.url + os.linesep)
 
         print "SUCCESS"
         return 0
