@@ -37,6 +37,13 @@ class Classifier(object):
         self._vocab = set(t for tag, tokens in self._ntokens_per_tag.iteritems() for t in tokens.keys())
         self._tags = list(self._ntokens_per_tag.keys())
 
+        for tag, tokens in self._ntokens_per_tag.iteritems():
+            total = sum(tokens.values())
+            with open('/Users/bernardorufino/pastebin/classifier/{}.dat'.format(tag), 'w') as f:
+                for token, n in sorted(tokens.iteritems(), key=lambda (t, n): n, reverse=True):
+                    f.write("{:<14} {:<5} {:<5.2f} {:<5.2f}\n".format(token, n, float(n) / total, self._weights[token]))
+                f.write('\n')
+
     def save(self, dir):
         raise NotImplementedError()
 
