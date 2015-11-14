@@ -36,6 +36,9 @@ class Classifier(object):
         self._ndocs = sum(self._ndocs_per_tag.values())
         self._vocab = set(t for tag, tokens in self._ntokens_per_tag.iteritems() for t in tokens.keys())
         self._tags = list(self._ntokens_per_tag.keys())
+        # sys.stdout.write('Computing weights...')
+        self._weights = self._compute_weights()
+        # print(' Done')
 
         for tag, tokens in self._ntokens_per_tag.iteritems():
             total = sum(tokens.values())
@@ -43,6 +46,33 @@ class Classifier(object):
                 for token, n in sorted(tokens.iteritems(), key=lambda (t, n): n, reverse=True):
                     f.write("{:<14} {:<5} {:<5.2f} {:<5.2f}\n".format(token, n, float(n) / total, self._weights[token]))
                 f.write('\n')
+
+    def _compute_weights(self):
+        weights = {}
+        grs = {}
+
+        n_tokens = sum(sum(self._ntokens_per_tag[tag].values()) for tag in self._tags)
+        n_tokens_per_tag = {}
+        for tag in self._tags:
+            n_tokens_per_tag[tag] = sum(self._ntokens_per_tag[tag].values())
+        for token in self._vocab:
+            N = 0
+            n_t = sum(self._ntokens_per_tag[tag][token] for tag in self._tags)
+            for tag in self._tags:
+                n_tc = self._ntokens_per_tag[tag].get(token, 0)
+                n_c_tokens = n_tokens_per_tag[tag]
+                p_tc = float(n_tc) / n_tokens
+                if n_tc > 0:
+                    N += p_tc * math.log(float(n_tc) * n_tokens / n_c_tokens / n_t, 2)
+            p_t = float(n_t) / n_tokens
+            D = - p_t * math.log(p_t, 2)
+            grs[token] = N / D
+
+        gr_avg = sum(grs.values()) / len(grs)
+        for token in self._vocab:
+            weights[token] = grs[token] / gr_avg
+
+        return weights
 
     def save(self, dir):
         raise NotImplementedError()
@@ -59,7 +89,8 @@ class Classifier(object):
             logp_likelihood = 0
             for token in tokens:
                 n = self._ntokens_per_tag[tag].get(token, 0)
-                logp = math.log(float(n + alpha) / (ntokens + alpha * vocab_size))
+                w = self._weights.get(token, 0.01)
+                logp = w * math.log(float(n + alpha) / (ntokens + alpha * vocab_size))
                 logp_likelihood += logp
             logp_tag = logp_prior + logp_likelihood
             if verbose:
