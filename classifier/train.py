@@ -5,6 +5,7 @@ from collections import defaultdict
 import json
 import os
 import re
+from utils import histogram
 import parameters
 
 
@@ -16,13 +17,6 @@ parser.add_argument('-o', '--output', default=None,
                     help="Output directory where precomputed data for the classifier will be put. Defaults to "
                          "'classifier' subdirectory to the directory of <data> argument. Directory is created if not "
                          "existent")
-
-
-def histogram(lis):
-    card = defaultdict(lambda: 0)
-    for item in lis:
-        card[item] += 1
-    return card
 
 
 def main():
