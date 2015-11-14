@@ -25,7 +25,7 @@ class Classifier(object):
             self.nwords_per_tag[tag] = reduce(lambda a, b: a + b, words.values())
 
     def classify(self, text):
-        # print '--'
+        print '--'
         words = text.split()
         max_tag = (-float('inf'), None)
         for tag in self.tags:
@@ -35,12 +35,12 @@ class Classifier(object):
                 n = self.words_per_tag[tag][word] if word in self.words_per_tag[tag] else 0
                 logp = math.log(float(n + 1) / self.nwords_per_tag[tag])
                 logp_likelihood += logp
-                # print 'p_likelihood = {}, p = {}'.format(p_likelihood, p)
+                #print 'p_likelihood = {}, p = {}'.format(logp_likelihood, logp)
             logp_tag = logp_prior + logp_likelihood
-            # print 'tag = {}, p = {}, p_prior = {}, p_likelihood = {}'.format(tag, logp_tag, logp_prior, logp_likelihood)
+            print 'tag = {}, p = {}, p_prior = {}, p_likelihood = {}'.format(tag, logp_tag, logp_prior, logp_likelihood)
             max_tag = max(max_tag, (logp_tag, tag))
         logp_tag, tag = max_tag
-        # print ''
+        print ''
         return tag
 
 
@@ -83,6 +83,8 @@ def main():
         data_serial = f.read()
 
     data_json = json.loads(data_serial)
+    if isinstance(data_json, dict):
+        data_json = [data_json]
 
     for example in data_json:
         content = example['content']
